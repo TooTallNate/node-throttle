@@ -1,0 +1,14 @@
+{
+  "name": "throttle",
+  "description": "Throttle node Stream instances with \"bytes per second\".",
+  "version": "0.0.1",
+  "repository": "git://github.com/TooTallNate/node-throttle.git",
+  "author": "Nathan Rajlich <nathan@tootallnate.net>",
+  "main": "./throttle",
+  "scripts": {
+    "test": "expresso test/test*.js"
+  },
+  "engines": {
+    "node": "*"
+  }
+}
