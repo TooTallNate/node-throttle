@@ -13,10 +13,15 @@ Usage
     var throttle = require('throttle'); // Extends `Stream.prototype`
     
     var bytesPerKilobyte = 1024;
-    throttle(process.stdin, 100 * bytesPerKilobyte);
+    var unthrottle = throttle(process.stdin, 100 * bytesPerKilobyte);
     
     // "data" events from 'stdin' will only arrive at a rate of 100kbps...
+    process.stdin.resume();
 
+    // to remove the throttling, invoke the function returned from 'throttle'
+    unthrottle();
+
+That's it!
 
 Installation
 ------------
