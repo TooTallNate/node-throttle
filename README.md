@@ -10,7 +10,7 @@ or to simulate reading from a file in real-time, etc.
 Usage
 -----
 
-    var throttle = require('throttle'); // Extends `Stream.prototype`
+    var throttle = require('throttle');
     
     var bytesPerKilobyte = 1024;
     var unthrottle = throttle(process.stdin, 100 * bytesPerKilobyte);
