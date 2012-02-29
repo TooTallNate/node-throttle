@@ -18,7 +18,7 @@ function at(stream) {
     funcs.B = fn;
 
     // add rest of reasonable units
-    ['kilo', 'mega', 'giga', 'tera'].forEach(function(unit, i) {
+    ['kilo', 'mega', 'giga'].forEach(function(unit, i) {
       var fn = per(stream, amount, (i + 1) * 10);
       funcs[unit + 'bytes'] = fn;
       funcs[unit[0] + 'b'] = fn;
