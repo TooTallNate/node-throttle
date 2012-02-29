@@ -13,6 +13,7 @@ function at(stream) {
 
     // add bytes option
     var fn = per(stream, amount, 0);
+    funcs.byte = fn;
     funcs.bytes = fn;
     funcs.b = fn;
     funcs.B = fn;
@@ -20,6 +21,7 @@ function at(stream) {
     // add rest of reasonable units
     ['kilo', 'mega', 'giga'].forEach(function(unit, i) {
       var fn = per(stream, amount, (i + 1) * 10);
+      funcs[unit + 'byte'] = fn;
       funcs[unit + 'bytes'] = fn;
       funcs[unit[0] + 'b'] = fn;
       funcs[unit[0].toUpperCase() + 'B'] = fn;
