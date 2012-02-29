@@ -19,7 +19,7 @@ function at(stream) {
 
     // add rest of reasonable units
     ['kilo', 'mega', 'giga', 'tera'].forEach(function(unit, i) {
-      var fn = per(stream, amount, i + 1);
+      var fn = per(stream, amount, (i + 1) * 10);
       funcs[unit + 'bytes'] = fn;
       funcs[unit[0] + 'b'] = fn;
       funcs[unit[0].toUpperCase() + 'B'] = fn;
@@ -45,15 +45,13 @@ var time = {
 // allows time unit to be chosen
 //
 function per(stream, amount, unit) {
-  var bytes = amount << unit;
-
   function setPer(n) {
     var setTimeUnit = {};
 
     for (var key in time) {
       if (!time.hasOwnProperty(key)) continue;
       setTimeUnit.__defineGetter__(key + 's', function() {
-        return initThrottle(stream, bytes, n * time[key]);
+        return initThrottle(stream, amount << unit, n * time[key]);
       });
     }
 
@@ -63,7 +61,7 @@ function per(stream, amount, unit) {
   for (var key in time) {
     if (!time.hasOwnProperty(key)) continue;
     setPer.__defineGetter__(key, function() {
-      return initThrottle(stream, bytes, time[key]);
+      return initThrottle(stream, amount << unit, time[key]);
     });
   }
 
