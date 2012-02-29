@@ -23,6 +23,11 @@ Usage
 
 That's it!
 
+There's now also a friendlier API
+
+    var unthrottle = throttle(stream).at(500).kb.per.second;
+    var unthrottle = throttle(stream).at(10).megabytes.per(5).minutes;
+
 Installation
 ------------
 
