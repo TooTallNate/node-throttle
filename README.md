@@ -10,23 +10,26 @@ or to simulate reading from a file in real-time, etc.
 Usage
 -----
 
-    var throttle = require('throttle');
+``` js
+var throttle = require('throttle');
     
-    var bytesPerKilobyte = 1024;
-    var unthrottle = throttle(process.stdin, 100 * bytesPerKilobyte);
+var bytesPerKilobyte = 1024;
+var unthrottle = throttle(process.stdin, 100 * bytesPerKilobyte);
     
-    // "data" events from 'stdin' will only arrive at a rate of 100kbps...
-    process.stdin.resume();
+// "data" events from 'stdin' will only arrive at a rate of 100kbps...
+process.stdin.resume();
 
-    // to remove the throttling, invoke the function returned from 'throttle'
-    unthrottle();
+// to remove the throttling, invoke the function returned from 'throttle'
+unthrottle();
+```
 
 That's it!
 
 Installation
 ------------
 
-    npm install throttle
-
+``` bash
+$ npm install throttle
+```
 
 [NodeJS]: http://nodejs.org
