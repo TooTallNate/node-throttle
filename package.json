@@ -5,9 +5,6 @@
   "repository": "git://github.com/TooTallNate/node-throttle.git",
   "author": "Nathan Rajlich <nathan@tootallnate.net>",
   "main": "./throttle",
-  "scripts": {
-    "test": "expresso test/test*.js"
-  },
   "engines": {
     "node": "*"
   }
