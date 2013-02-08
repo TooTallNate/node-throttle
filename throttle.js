@@ -1,34 +1,82 @@
-module.exports = function throttle(stream, bytesPerSecond) {
 
-  var startTime = Date.now();
-  var totalBytes = 0;
-  var timeoutId;
+/**
+ * Module dependencies.
+ */
 
-  stream.on("data", onData);
+var assert = require('assert');
+var Parser = require('stream-parser');
+var inherits = require('util').inherits;
+var Transform = require('stream').Transform;
 
-  function resume() {
-    timeoutId = undefined;
-    stream.resume();
+// node v0.8.x compat
+if (!Transform) Transform = require('readable-stream/transform');
+
+/**
+ * Module exports.
+ */
+
+module.exports = Throttle;
+
+function Throttle (opts) {
+  if (!(this instanceof Throttle)) return new Throttle(opts);
+
+  if ('number' == typeof opts) opts = { bps: opts };
+  if (!opts) opts = {};
+  if (null == opts.lowWaterMark) opts.lowWaterMark = 0;
+  if (null == opts.highWaterMark) opts.highWaterMark = 0;
+  if (null == opts.bps) throw new Error('must pass a "bps" bytes-per-second option');
+  if (null == opts.chunkSize) opts.chunkSize = opts.bps / 10 | 0; // better size?
+
+  Transform.call(this, opts);
+
+  this.bps = opts.bps;
+  this.chunkSize = opts.chunkSize;
+
+  this.totalBytes = 0;
+  this.startTime = Date.now();
+
+  this._passthroughChunk();
+}
+inherits(Throttle, Transform);
+
+/**
+ * Mixin `Parser`.
+ */
+
+Parser(Throttle.prototype);
+
+/**
+ * @api private
+ */
+
+Throttle.prototype._passthroughChunk = function () {
+  this._passthrough(this.chunkSize, this._onchunk);
+  this.totalBytes += this.chunkSize;
+};
+
+/**
+ * @api private
+ */
+
+Throttle.prototype._onchunk = function (output, done) {
+  var self = this;
+  var totalSeconds = (Date.now() - this.startTime) / 1000;
+  var expected = totalSeconds * this.bps;
+
+  function d () {
+    self._passthroughChunk();
+    done();
   }
 
-  function onData(chunk) {
-    totalBytes += chunk.length;
-    var totalSeconds = (Date.now() - startTime) / 1000;
-    var expected = totalSeconds * bytesPerSecond;
-    if (totalBytes > expected) {
-      // Use this byte count to calculate how many seconds ahead we are.
-      var remainder = totalBytes - expected;
-      var sleepTime =  remainder / bytesPerSecond * 1000;
-      //if (sleepTime > 40) {
-        stream.pause();
-        timeoutId = setTimeout(resume, sleepTime);
-      //}
+  if (this.totalBytes > expected) {
+    // Use this byte count to calculate how many seconds ahead we are.
+    var remainder = this.totalBytes - expected;
+    var sleepTime = remainder / this.bps * 1000;
+    //console.error('sleep time: %d', sleepTime);
+    if (sleepTime > 0) {
+      setTimeout(d, sleepTime);
+    } else {
+      d();
     }
   }
-
-  // The return value is a Function that, when invoked, will cancel the throttling behavior
-  return function unthrottle() {
-    if (timeoutId) clearTimeout(timeoutId);
-    stream.removeListener('data', onData);
-  }
-}
+};
