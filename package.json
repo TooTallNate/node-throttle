@@ -15,6 +15,7 @@
     "stream-parser": ">= 0.0.2"
   },
   "devDependencies": {
-    "mocha": "*"
+    "mocha": "*",
+    "readable-stream": "*"
   }
 }
