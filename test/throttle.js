@@ -100,6 +100,22 @@ describe('Throttle', function () {
     r.pipe(t);
   });
 
+  it('should take ~500ms to read 100 bytes at 200 bps', function (done) {
+    var r = new Random(100);
+    var t = new Throttle(200);
+    var start = Date.now();
+    var bytes = 0;
+    t.on('data', function (data) {
+      bytes += data.length;
+    });
+    t.on('end', function () {
+      assertTimespan(start, new Date(), 500);
+      assert.equal(100, bytes);
+      done();
+    });
+    r.pipe(t);
+  });
+
 });
 
 function assertTimespan (start, end, expected, tolerance) {
