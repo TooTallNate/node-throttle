@@ -17,6 +17,13 @@ if (!Transform) Transform = require('readable-stream/transform');
 
 module.exports = Throttle;
 
+/**
+ * The `Throttle` passthrough stream class.
+ *
+ * @param {Number|Object} opts an options object or the "bps" Number value
+ * @api public
+ */
+
 function Throttle (opts) {
   if (!(this instanceof Throttle)) return new Throttle(opts);
 
