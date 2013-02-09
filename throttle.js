@@ -37,7 +37,7 @@ function Throttle (opts) {
   Transform.call(this, opts);
 
   this.bps = opts.bps;
-  this.chunkSize = opts.chunkSize;
+  this.chunkSize = Math.max(1, opts.chunkSize);
 
   this.totalBytes = 0;
   this.startTime = Date.now();

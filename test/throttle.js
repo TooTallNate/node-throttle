@@ -116,6 +116,22 @@ describe('Throttle', function () {
     r.pipe(t);
   });
 
+  it('should take ~3 seconds to read 3 bytes at 1 bps', function (done) {
+    var r = new Random(3);
+    var t = new Throttle(1);
+    var start = Date.now();
+    var bytes = 0;
+    t.on('data', function (data) {
+      bytes += data.length;
+    });
+    t.on('end', function () {
+      assertTimespan(start, new Date(), 3000);
+      assert.equal(3, bytes);
+      done();
+    });
+    r.pipe(t);
+  });
+
 });
 
 function assertTimespan (start, end, expected, tolerance) {
