@@ -1,26 +1,27 @@
 node-throttle
 =============
-### Throttle node Stream instances with "Bytes per Second".
+### Node.js Transform stream that passes data through at `n` bytes per second
 
-This micro-module offers a `throttle(bytesPerSecond)` Function, which is compatible
-with [node][NodeJS] `Stream` instances. It can be useful for throttling HTTP uploads
-or to simulate reading from a file in real-time, etc.
+This module offers a `Throttle` passthrough stream class, which allows you to
+write data to it and it will be passed through in `n` bytes per second. It can
+be useful for throttling HTTP uploads or to simulate reading from a file in
+real-time, etc.
 
 
-Usage
------
+Example
+-------
+
+Here's an example of throttling stdin at 10 kb/s and outputting the data to
+stdout:
 
 ``` js
-var throttle = require('throttle');
-    
-var bytesPerKilobyte = 1024;
-var unthrottle = throttle(process.stdin, 100 * bytesPerKilobyte);
-    
-// "data" events from 'stdin' will only arrive at a rate of 100kbps...
-process.stdin.resume();
+var Throttle = require('throttle');
 
-// to remove the throttling, invoke the function returned from 'throttle'
-unthrottle();
+// create a "Throttle" instance that reads at 10 kb/s
+var kb = 1024;
+var throttle = new Throttle(10 * kb);
+
+process.stdin.pipe(throttle).pipe(process.stdout);
 ```
 
 That's it!
@@ -31,5 +32,3 @@ Installation
 ``` bash
 $ npm install throttle
 ```
-
-[NodeJS]: http://nodejs.org
