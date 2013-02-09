@@ -12,20 +12,21 @@ real-time, etc.
 Example
 -------
 
-Here's an example of throttling stdin at 10 kb/s and outputting the data to
-stdout:
+Here's an example of throttling stdin at 1 byte per second and outputting the
+data to stdout:
 
 ``` js
 var Throttle = require('throttle');
 
-// create a "Throttle" instance that reads at 10 kb/s
-var kb = 1024;
-var throttle = new Throttle(10 * kb);
+// create a "Throttle" instance that reads at 1 bps
+var throttle = new Throttle(1);
 
 process.stdin.pipe(throttle).pipe(process.stdout);
 ```
 
-That's it!
+We can see it in action with the `echo` command:
+
+![](http://f.cl.ly/items/2g3d45452y411h3l0M10/throttle.opt.gif)
 
 Installation
 ------------
