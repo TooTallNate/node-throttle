@@ -26,7 +26,7 @@ process.stdin.pipe(throttle).pipe(process.stdout);
 
 We can see it in action with the `echo` command:
 
-![](http://f.cl.ly/items/2g3d45452y411h3l0M10/throttle.opt.gif)
+![](http://f.cl.ly/items/2h1I2Q0m3x1I2s2r2O3R/throttle.opt.gif)
 
 Installation
 ------------
