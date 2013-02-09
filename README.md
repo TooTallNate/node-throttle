@@ -1,6 +1,7 @@
 node-throttle
 =============
 ### Node.js Transform stream that passes data through at `n` bytes per second
+[![Build Status](https://secure.travis-ci.org/TooTallNate/node-throttle.png)](http://travis-ci.org/TooTallNate/node-throttle)
 
 This module offers a `Throttle` passthrough stream class, which allows you to
 write data to it and it will be passed through in `n` bytes per second. It can
