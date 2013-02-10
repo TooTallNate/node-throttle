@@ -9,6 +9,14 @@ be useful for throttling HTTP uploads or to simulate reading from a file in
 real-time, etc.
 
 
+Installation
+------------
+
+``` bash
+$ npm install throttle
+```
+
+
 Example
 -------
 
@@ -28,9 +36,29 @@ We can see it in action with the `echo` command:
 
 ![](http://f.cl.ly/items/2h1I2Q0m3x1I2s2r2O3R/throttle.opt.gif)
 
-Installation
-------------
 
-``` bash
-$ npm install throttle
+API
+---
+
+  - [Throttle()](#throttle)
+
+## Throttle()
+
+The `Throttle` passthrough stream class is very similar to the node core
+`stream.Passthrough` stream, except that you specify a `bps` "bytes per
+second" option and data *will not* be passed through faster than the byte
+value you specify.
+
+You can invoke with just a `bps` Number and get the rest of the default
+options. This should be more common:
+
+``` js
+process.stdin.pipe(new Throttle(100 * 1024)).pipe(process.stdout);
+```
+
+Or you can pass an `options` Object in, with a `bps` value specified along with
+other options:
+
+``` js
+var t = new Throttle({ bps: 100 * 1024, chunkSize: 100, highWaterMark: 500 });
 ```
