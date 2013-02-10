@@ -85,5 +85,7 @@ Throttle.prototype._onchunk = function (output, done) {
     } else {
       d();
     }
+  } else {
+    d();
   }
 };

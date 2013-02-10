@@ -28,6 +28,23 @@ Random.prototype._read = function (n, cb) {
   }
 };
 
+// Readable stream impl that outputs random data with a 100 ms delay per byte
+function Slow (n) {
+  Readable.call(this);
+  this.remaining = +n;
+}
+inherits(Slow, Readable);
+Slow.prototype._read = function (n, cb) {
+  n = 1;
+  this.remaining -= n;
+  if (this.remaining >= 0) {
+    setTimeout(cb.bind(null, null, new Buffer(n)), 100);
+  } else {
+    cb(null, null); // emit "end"
+  }
+};
+
+
 
 describe('Throttle', function () {
 
@@ -132,11 +149,27 @@ describe('Throttle', function () {
     r.pipe(t);
   });
 
+  it('should work as expected with a slow readable', function (done) {
+    var r = new Slow(10); // should take ~1 second
+    var t = new Throttle(100); // ~10x faster than the slow stream
+    var start = Date.now();
+    var bytes = 0;
+    t.on('data', function (data) {
+      bytes += data.length;
+    });
+    t.on('end', function () {
+      assertTimespan(start, new Date(), 1000);
+      assert.equal(10, bytes);
+      done();
+    });
+    r.pipe(t);
+  });
+
 });
 
 function assertTimespan (start, end, expected, tolerance) {
   if (null == tolerance) tolerance = 90;
   var diff = end - start;
   var delta = expected - diff;
-  assert(Math.abs(delta) < tolerance);
+  assert(Math.abs(delta) < tolerance, 'tolerance of ' + tolerance + ', got ' + delta);
 }
