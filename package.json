@@ -16,6 +16,6 @@
   },
   "devDependencies": {
     "mocha": "*",
-    "readable-stream": "*"
+    "readable-stream": ">= 0.3.0"
   }
 }
