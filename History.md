@@ -1,3 +1,9 @@
+1.0.2 / 2013-02-26
+==================
+
+ - package: depend on "readable-stream" >= v0.3.0
+ - travis: don't test node v0.7.x
+
 1.0.1 / 2013-02-10
 ==================
 
