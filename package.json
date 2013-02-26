@@ -12,10 +12,10 @@
     "node": ">= v0.8.0"
   },
   "dependencies": {
-    "stream-parser": ">= 0.0.2"
+    "stream-parser": ">= 0.0.2",
+    "readable-stream": ">= 0.3.0"
   },
   "devDependencies": {
-    "mocha": "*",
-    "readable-stream": ">= 0.3.0"
+    "mocha": "*"
   }
 }
