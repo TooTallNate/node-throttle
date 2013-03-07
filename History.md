@@ -1,3 +1,8 @@
+1.0.3 / 2013-03-07
+==================
+
+ - test: update test Readable stream classes for node v0.9.11 API changes
+
 1.0.2 / 2013-02-26
 ==================
 
