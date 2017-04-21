@@ -167,6 +167,26 @@ describe('Throttle', function () {
     r.pipe(t);
   });
 
+  it('should work if being piped to some time after instanciation', function (done) {
+    var r = new Random(1024);
+    var t = new Throttle(1024);
+    setTimeout(
+      function () {
+        var start = Date.now();
+        var bytes = 0;
+        t.on('data', function (data) {
+          bytes += data.length;
+        });
+        t.on('end', function () {
+          assertTimespan(start, new Date(), 1000);
+          assert.equal(1024, bytes);
+          done();
+        });
+        r.pipe(t);
+      },
+      200);
+  });
+
 });
 
 function assertTimespan (start, end, expected, tolerance) {
