@@ -57,9 +57,10 @@ function Throttle (opts) {
   this.chunkSize = Math.max(1, opts.chunkSize);
 
   this.totalBytes = 0;
-  this.startTime = Date.now();
-
-  this._passthroughChunk();
+  this.once('pipe', () => {
+    this.startTime = Date.now();
+    this._passthroughChunk();
+  });
 }
 inherits(Throttle, Transform);
 
